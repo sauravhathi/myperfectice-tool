@@ -1,0 +1,277 @@
+<!-- [Intermediate Practice] -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Myperfectice Tool</title>
+</head>
+<style>
+    body {
+        background-color: #f2f2f2;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .tool {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+        max-width: 600px;
+        min-width: 300px;
+    }
+
+    label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    input {
+        display: block;
+        width: 30%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        margin-bottom: 10px;
+    }
+
+    #testName {
+        display: block;
+        margin-bottom: 10px;
+    }
+
+    #btn {
+        display: block;
+        width: 20%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        margin-bottom: 10px;
+        background-color: #fff;
+        cursor: pointer;
+    }
+
+    #btn:hover {
+        background-color: #ccc;
+    }
+
+    #text {
+        display: block;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        margin-bottom: 10px;
+    }
+
+    .tool #text {
+        width: 95%;
+    }
+
+    .tabelDiv {
+        overflow-x: auto;
+    }
+
+    #anstable {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    #anstable td, #anstable th {
+        border: 1px solid #ddd;
+        padding: 8px;
+    }
+
+    #anstable tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    #anstable tr:hover {
+        background-color: #ddd;
+    }
+
+    #anstable th {
+        padding-top: 12px;
+        padding-bottom: 12px;
+        text-align: left;
+        background-color: #4CAF50;
+        color: white;
+    }
+
+    #anstable td {
+        text-align: left;
+    }
+
+    .btnDiv {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    #clickToCopy {
+        display: block;
+        width: 20%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        margin-bottom: 10px;
+        background-color: #fff;
+        cursor: pointer;
+    }
+
+    #clickToCopy:hover {
+        background-color: #ccc;
+    }
+
+    #btn2 {
+        display: block;
+        width: 20%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        margin-bottom: 10px;
+        background-color: #fff;
+        cursor: pointer;
+    }
+
+    #btn2:hover {
+        background-color: #ccc;
+    }
+
+    footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background-color: #fff;
+        padding: 10px;
+        text-align: center;
+    }
+
+    footer a {
+        color: #000;
+        text-decoration: none;
+    }
+
+    footer a:hover {
+        text-decoration: underline;
+    }
+
+
+</style>
+
+<body>
+    <div class="tool">
+        <label for="level">Level</label>
+        <input type="number" id="level" name="level" value="3" placeholder="Enter Level" min="1" max="3">
+        <label for="name">Test Name</label>
+        <input type="number" id="name" name="name" value="0" placeholder="Enter Test Name">
+        <span id="testName"></span>
+        <button id="btn"
+        style="margin-top: 20px;">Click</button>
+        <label for="text">Getting Ans (only JSON format data paste here)</label>
+        <textarea id="text" name="text" rows="20" cols="60"></textarea>
+        <div class="btnDiv">
+            <button id="clickToCopy">Copy</button>
+            <button id="btn2">Click</button>
+        </div>
+        <!-- <div class="tabelDiv">
+            <table  id="anstable">
+                <tr>
+                    <th>Sr No.</th>
+                    <th>Question</th>
+                    <th>Answer</th>
+                </tr>
+            </table>
+        </div> -->
+    </div>
+    <footer>
+        <span>Developed By: <a href="https://github.com/sauravhathi" target="_blank">@sauravhathi</a></span>
+    </footer>
+</body>
+
+<!-- level3 ans getting -->
+<script type="module">
+
+    import level1 from './level1.json' assert { type: 'json' }
+    import level2 from './level2.json' assert { type: 'json' }
+    import level3 from './level3.json' assert { type: 'json' }
+    import level4 from './level4.json' assert { type: 'json' }
+    import level5 from './level5.json' assert { type: 'json' }
+
+    document.getElementById("btn").addEventListener("click", function () {
+
+        const level = document.getElementById("level").value;
+        const test = document.getElementById("name").value;
+        if((level == 1 && test > 35) || (level == 2 && test > 46) || (level == 3 && test > 56) || (level == 4 && test > 48) || (level == 5 && test > 1)){
+            alert("Test Number should be less than " + (level == 1 ? 36 : level == 2 ? 47 : level == 3 ? 57 : level == 4 ? 49 : 2));
+            return;
+        }
+
+
+        localStorage.setItem("test", test);
+        const beg = "https://lpu.myperfectice.com/student/assessments/";
+
+        const url = level == 1 ? beg + encodeURIComponent(level1[test].title) + "?id=" + level1[test].id :
+            level == 2 ? beg + encodeURIComponent(level2[test].title) + "?id=" + level2[test].id :
+                level == 3 ? beg + encodeURIComponent(level3[test].title) + "?id=" + level3[test].id :
+                    level == 4 ? beg + encodeURIComponent(level4[test].title) + "?id=" + level4[test].id :
+                        beg + encodeURIComponent(level5[test].title) + "?id=" + level5[test].id;
+
+        console.log(url);
+        window.open(url, '_blank').focus();
+    });
+
+    document.getElementById("testName").innerHTML = localStorage.getItem("test");
+
+
+</script>
+
+<script type="module">
+
+    // import myperfectice from './myperAns.json' assert { type: 'json' }
+    // const anstable = document.getElementById("anstable");
+    // for (let i = 0; i < myperfectice.length; i++) {
+    //     const row = anstable.insertRow(i + 1);
+    //     const cell1 = row.insertCell(0);
+    //     const cell2 = row.insertCell(1);
+    //     const cell3 = row.insertCell(2);
+    //     cell1.innerHTML = i + 1;
+    //     cell2.innerHTML = myperfectice[i].questionTextArray;
+    //     cell3.innerHTML = myperfectice[i].answerTextArray;
+    // }
+
+</script>
+
+<!-- report ans -->
+<script type="module">
+    document.getElementById("btn2").addEventListener("click", function () {
+        const text = document.getElementById("text").value;
+        const dataValue = JSON.parse(text);
+        const questionDetails = []
+        for (let i = 0; i < dataValue.length; i++) {
+
+            questionDetails.push({
+                questionTextArray: dataValue[i].questionTextArray,
+                answerTextArray: dataValue[i].answers.filter((answer) => answer.isCorrectAnswer).map((answer) => answer.answerTextArray).flat(),
+            })
+        }
+        const str = JSON.stringify(questionDetails).substring(1, JSON.stringify(questionDetails).length - 1);
+        document.getElementById("text").value = ',' + str;
+        document.getElementById("btn2").innerHTML = "clicked";
+    });
+
+    document.getElementById("clickToCopy").addEventListener("click", function () {
+        const text = document.getElementById("text").value;
+        navigator.clipboard.writeText(text);
+        document.getElementById("clickToCopy").innerHTML = "Copied";
+        document.getElementById("text").value = "";
+    });
+</script>
+
+
+</html>
