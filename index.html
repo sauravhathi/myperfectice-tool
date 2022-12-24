@@ -1,4 +1,3 @@
-<!-- [Intermediate Practice] -->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -45,10 +44,17 @@
         margin-bottom: 10px;
     }
 
-    #btn {
+    .btnA {
+        display: flex;
+        gap: 10px;
+    }
+
+    #btn, .btnA a{
         display: block;
-        width: 20%;
-        padding: 10px;
+        text-align: center;
+        text-decoration: none;
+        width: 15%;
+        padding: 10px 5px;
         border: 1px solid #ccc;
         border-radius: 5px;
         margin-bottom: 10px;
@@ -56,7 +62,7 @@
         cursor: pointer;
     }
 
-    #btn:hover {
+    #btn:hover, .btnA a:hover {
         background-color: #ccc;
     }
 
@@ -81,7 +87,8 @@
         width: 100%;
     }
 
-    #anstable td, #anstable th {
+    #anstable td,
+    #anstable th {
         border: 1px solid #ddd;
         padding: 8px;
     }
@@ -160,34 +167,34 @@
     footer a:hover {
         text-decoration: underline;
     }
-
-
 </style>
 
 <body>
     <div class="tool">
         <label for="level">Level</label>
-        <input type="number" id="level" name="level" value="3" placeholder="Enter Level" min="1" max="3">
+        <input type="number" id="level" name="level" value="3" placeholder="Enter Level" min="1" max="5">
         <label for="name">Test Name</label>
         <input type="number" id="name" name="name" value="0" placeholder="Enter Test Name">
         <span id="testName"></span>
-        <button id="btn"
-        style="margin-top: 20px;">Click</button>
+        <div class="btnA">
+            <button id="btn" >Click</button>
+            <a href="#" id="directLink" target="_blank" style="display: none;">Direct Link</a>
+        </div>
         <label for="text">Getting Ans (only JSON format data paste here)</label>
         <textarea id="text" name="text" rows="20" cols="60"></textarea>
         <div class="btnDiv">
             <button id="clickToCopy">Copy</button>
             <button id="btn2">Click</button>
         </div>
-        <!-- <div class="tabelDiv">
-            <table  id="anstable">
+        <div class="tabelDiv">
+            <table id="anstable">
                 <tr>
                     <th>Sr No.</th>
                     <th>Question</th>
                     <th>Answer</th>
                 </tr>
             </table>
-        </div> -->
+        </div>
     </div>
     <footer>
         <span>Developed By: <a href="https://github.com/sauravhathi" target="_blank">@sauravhathi</a></span>
@@ -203,11 +210,22 @@
     import level4 from './level4.json' assert { type: 'json' }
     import level5 from './level5.json' assert { type: 'json' }
 
+    // const testname = "[Intermediate Practice] Quant - Time , Work & Wages v3";
+    // const find = (arr, testname) => {
+    //     for (let i = 0; i < arr.length; i++) {
+    //         if (arr[i].title == testname) {
+    //             return i;
+    //         }
+    //     }
+    // }
+
+    // console.log(find(level3, testname));
+
     document.getElementById("btn").addEventListener("click", function () {
 
         const level = document.getElementById("level").value;
         const test = document.getElementById("name").value;
-        if((level == 1 && test > 35) || (level == 2 && test > 46) || (level == 3 && test > 56) || (level == 4 && test > 48) || (level == 5 && test > 1)){
+        if ((level == 1 && test > 35) || (level == 2 && test > 46) || (level == 3 && test > 56) || (level == 4 && test > 48) || (level == 5 && test > 1)) {
             alert("Test Number should be less than " + (level == 1 ? 36 : level == 2 ? 47 : level == 3 ? 57 : level == 4 ? 49 : 2));
             return;
         }
@@ -215,35 +233,57 @@
 
         localStorage.setItem("test", test);
         const beg = "https://lpu.myperfectice.com/student/assessments/";
+        const testUrl = "https://lpu.myperfectice.com/student/learning-test/";
 
-        const url = level == 1 ? beg + encodeURIComponent(level1[test].title) + "?id=" + level1[test].id :
-            level == 2 ? beg + encodeURIComponent(level2[test].title) + "?id=" + level2[test].id :
-                level == 3 ? beg + encodeURIComponent(level3[test].title) + "?id=" + level3[test].id :
-                    level == 4 ? beg + encodeURIComponent(level4[test].title) + "?id=" + level4[test].id :
-                        beg + encodeURIComponent(level5[test].title) + "?id=" + level5[test].id;
+        let url="";
+        let levelId = "";
+        
+        if (level == 1) {
+            levelId = level1[test].id;
+            url = beg + encodeURIComponent(level1[test].title) + "?id=" + levelId;
+        } else if (level == 2) {
+            levelId = level2[test].id;
+            url = beg + encodeURIComponent(level2[test].title) + "?id=" + levelId;
+        } else if (level == 3) {
+            levelId = level3[test].id;
+            url = beg + encodeURIComponent(level3[test].title) + "?id=" + levelId;
+        } else if (level == 4) {
+            levelId = level4[test].id;
+            url = beg + encodeURIComponent(level4[test].title) + "?id=" + levelId;
+        } else {
+            levelId = level5[test].id;
+            url = beg + encodeURIComponent(level5[test].title) + "?id=" + levelId;
+        }
 
-        console.log(url);
+        const directLink = document.getElementById("directLink");
+        if (directLink.style.display == "none") {
+            directLink.style.display = "block";
+        }
+        else {
+            directLink.style.display = "none";
+        }
+        directLink.href = testUrl + levelId;
         window.open(url, '_blank').focus();
     });
 
     document.getElementById("testName").innerHTML = localStorage.getItem("test");
 
-
 </script>
 
 <script type="module">
 
-    // import myperfectice from './myperAns.json' assert { type: 'json' }
-    // const anstable = document.getElementById("anstable");
-    // for (let i = 0; i < myperfectice.length; i++) {
-    //     const row = anstable.insertRow(i + 1);
-    //     const cell1 = row.insertCell(0);
-    //     const cell2 = row.insertCell(1);
-    //     const cell3 = row.insertCell(2);
-    //     cell1.innerHTML = i + 1;
-    //     cell2.innerHTML = myperfectice[i].questionTextArray;
-    //     cell3.innerHTML = myperfectice[i].answerTextArray;
-    // }
+    import myperfectice from '../level3myperAns.json' assert { type: 'json' }
+    console.log(myperfectice.length);
+    const anstable = document.getElementById("anstable");
+    for (let i = 0; i < myperfectice.length; i++) {
+        const row = anstable.insertRow(i + 1);
+        const cell1 = row.insertCell(0);
+        const cell2 = row.insertCell(1);
+        const cell3 = row.insertCell(2);
+        cell1.innerHTML = i + 1;
+        cell2.innerHTML = myperfectice[i].questionTextArray;
+        cell3.innerHTML = myperfectice[i].answerTextArray;
+    }
 
 </script>
 
@@ -275,4 +315,3 @@
 
 
 </html>
-
