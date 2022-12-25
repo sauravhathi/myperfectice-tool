@@ -49,7 +49,8 @@
         gap: 10px;
     }
 
-    #btn, .btnA a{
+    #btn,
+    .btnA a {
         display: block;
         text-align: center;
         text-decoration: none;
@@ -62,7 +63,8 @@
         cursor: pointer;
     }
 
-    #btn:hover, .btnA a:hover {
+    #btn:hover,
+    .btnA a:hover {
         background-color: #ccc;
     }
 
@@ -174,10 +176,12 @@
         <label for="level">Level</label>
         <input type="number" id="level" name="level" value="3" placeholder="Enter Level" min="1" max="5">
         <label for="name">Test Name</label>
-        <input type="number" id="name" name="name" value="0" placeholder="Enter Test Name">
+        <input type="text" id="name" name="name" value="" placeholder="Enter Test Name">
         <span id="testName"></span>
+        <label for="test">Test No.</label>
+        <input type="number" id="test" name="test" value="0" readonly>
         <div class="btnA">
-            <button id="btn" >Click</button>
+            <button id="btn">Click</button>
             <a href="#" id="directLink" target="_blank" style="display: none;">Direct Link</a>
         </div>
         <label for="text">Getting Ans (only JSON format data paste here)</label>
@@ -210,50 +214,35 @@
     import level4 from './level4.json' assert { type: 'json' }
     import level5 from './level5.json' assert { type: 'json' }
 
-    // const testname = "[Intermediate Practice] Quant - Time , Work & Wages v3";
-    // const find = (arr, testname) => {
-    //     for (let i = 0; i < arr.length; i++) {
-    //         if (arr[i].title == testname) {
-    //             return i;
-    //         }
-    //     }
-    // }
-
-    // console.log(find(level3, testname));
-
     document.getElementById("btn").addEventListener("click", function () {
 
         const level = document.getElementById("level").value;
-        const test = document.getElementById("name").value;
-        if ((level == 1 && test > 35) || (level == 2 && test > 46) || (level == 3 && test > 56) || (level == 4 && test > 48) || (level == 5 && test > 1)) {
-            alert("Test Number should be less than " + (level == 1 ? 36 : level == 2 ? 47 : level == 3 ? 57 : level == 4 ? 49 : 2));
+        const name = document.getElementById("name").value;
+
+        const find = (arr, name) => {
+            for (let i = 0; i < arr.length; i++) {
+                if (arr[i].title == name) {
+                    return i;
+                }
+            }
+        }
+
+
+        const tlevel = level == 1 ? level1 : level == 2 ? level2 : level == 3 ? level3 : level == 4 ? level4 : level5;
+        const testNo = find(tlevel, name);
+
+        if (testNo == undefined) {
+            alert("Test Name Not Found");
             return;
         }
 
-
-        localStorage.setItem("test", test);
+        document.getElementById("test").value = testNo;
+        localStorage.setItem("test", name);
         const beg = "https://lpu.myperfectice.com/student/assessments/";
         const testUrl = "https://lpu.myperfectice.com/student/learning-test/";
 
-        let url="";
-        let levelId = "";
-        
-        if (level == 1) {
-            levelId = level1[test].id;
-            url = beg + encodeURIComponent(level1[test].title) + "?id=" + levelId;
-        } else if (level == 2) {
-            levelId = level2[test].id;
-            url = beg + encodeURIComponent(level2[test].title) + "?id=" + levelId;
-        } else if (level == 3) {
-            levelId = level3[test].id;
-            url = beg + encodeURIComponent(level3[test].title) + "?id=" + levelId;
-        } else if (level == 4) {
-            levelId = level4[test].id;
-            url = beg + encodeURIComponent(level4[test].title) + "?id=" + levelId;
-        } else {
-            levelId = level5[test].id;
-            url = beg + encodeURIComponent(level5[test].title) + "?id=" + levelId;
-        }
+        const levelId = tlevel[testNo].id;
+        const url = beg + encodeURIComponent(tlevel[testNo].title) + "?id=" + levelId;
 
         const directLink = document.getElementById("directLink");
         if (directLink.style.display == "none") {
@@ -263,14 +252,14 @@
             directLink.style.display = "none";
         }
         directLink.href = testUrl + levelId;
-        window.open(url, '_blank').focus();
+        window.open(url, "_blank").focus();
     });
 
     document.getElementById("testName").innerHTML = localStorage.getItem("test");
 
 </script>
 
-<script type="module">
+<!-- <script type="module">
 
     import myperfectice from '../level3myperAns.json' assert { type: 'json' }
     console.log(myperfectice.length);
@@ -285,7 +274,7 @@
         cell3.innerHTML = myperfectice[i].answerTextArray;
     }
 
-</script>
+</script> -->
 
 <!-- report ans -->
 <script type="module">
