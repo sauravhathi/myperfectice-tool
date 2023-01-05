@@ -252,7 +252,7 @@
             directLink.style.display = "none";
         }
         directLink.href = testUrl + levelId;
-        window.open(url, "_blank").focus();
+        window.open(directLink.href, "_blank").focus();
     });
 
     document.getElementById("testName").innerHTML = localStorage.getItem("test");
@@ -261,7 +261,7 @@
 
 <!-- <script type="module">
 
-    import myperfectice from '../level3myperAns.json' assert { type: 'json' }
+    import myperfectice from '../level4myperAns.json' assert { type: 'json' }
     console.log(myperfectice.length);
     const anstable = document.getElementById("anstable");
     for (let i = 0; i < myperfectice.length; i++) {
