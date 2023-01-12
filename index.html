@@ -11,8 +11,8 @@
     body {
         background-color: #f2f2f2;
         display: flex;
-        justify-content: center;
-        align-items: center;
+        /* justify-content: center;
+        align-items: center; */
     }
 
     .tool {
@@ -20,8 +20,8 @@
         padding: 20px;
         border-radius: 10px;
         box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
-        max-width: 600px;
-        min-width: 300px;
+        width: min(100%, 1000px);
+        margin: 50px auto 100px auto;
     }
 
     label {
@@ -32,40 +32,11 @@
 
     input {
         display: block;
-        width: 30%;
+        width: min(100%, 500px);
         padding: 10px;
         border: 1px solid #ccc;
         border-radius: 5px;
         margin-bottom: 10px;
-    }
-
-    #testName {
-        display: block;
-        margin-bottom: 10px;
-    }
-
-    .btnA {
-        display: flex;
-        gap: 10px;
-    }
-
-    #btn,
-    .btnA a {
-        display: block;
-        text-align: center;
-        text-decoration: none;
-        width: 15%;
-        padding: 10px 5px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        margin-bottom: 10px;
-        background-color: #fff;
-        cursor: pointer;
-    }
-
-    #btn:hover,
-    .btnA a:hover {
-        background-color: #ccc;
     }
 
     #text {
@@ -169,34 +140,65 @@
     footer a:hover {
         text-decoration: underline;
     }
+
+    /* #testNameAndLink {
+        display: none;
+    } */
+
+    #testNameAndLinkTable {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    #testNameAndLinkTable td,
+    #testNameAndLinkTable th {
+        border: 1px solid #ddd;
+        padding: 8px;
+    }
+
+    td > a {
+        text-decoration: none;
+        color: white;
+    }
+
+    td > a:hover {
+        text-decoration: underline;
+    }
+
+    td > h4 {
+        margin: 0;
+    }
+
+    tr:first-child {
+        padding: 10px;
+        color: #fff;
+        background: linear-gradient(to right, #ff416c, #ff4b2b);
+    }
 </style>
 
 <body>
     <div class="tool">
         <label for="level">Level</label>
-        <input type="number" id="level" name="level" value="3" placeholder="Enter Level" min="1" max="5">
-        <label for="name">Test Name</label>
-        <input type="text" id="name" name="name" value="" placeholder="Enter Test Name">
-        <span id="testName"></span>
-        <label for="test">Test No.</label>
-        <input type="number" id="test" name="test" value="0" readonly>
-        <div class="btnA">
-            <button id="btn">Click</button>
-            <a href="#" id="directLink" target="_blank" style="display: none;">Direct Link</a>
-        </div>
+        <input type="number" id="level" name="level" value="" placeholder="Enter Level" min="1" max="5">
         <label for="text">Getting Ans (only JSON format data paste here)</label>
         <textarea id="text" name="text" rows="20" cols="60"></textarea>
         <div class="btnDiv">
             <button id="clickToCopy">Copy</button>
             <button id="btn2">Click</button>
         </div>
-        <div class="tabelDiv">
+        <!-- <div class="tabelDiv">
             <table id="anstable">
                 <tr>
                     <th>Sr No.</th>
                     <th>Question</th>
                     <th>Answer</th>
                 </tr>
+            </table>
+        </div> -->
+        <div id="testNameAndLink">
+            <h3>Level <span id="levelNo"></span></h3>
+            <table id="testNameAndLinkTable">
+                
             </table>
         </div>
     </div>
@@ -214,48 +216,46 @@
     import level4 from './level4.json' assert { type: 'json' }
     import level5 from './level5.json' assert { type: 'json' }
 
-    document.getElementById("btn").addEventListener("click", function () {
+    var levelInput = document.getElementById("level");
 
-        const level = document.getElementById("level").value;
-        const name = document.getElementById("name").value;
+    levelInput.addEventListener("input", function () {
 
-        const find = (arr, name) => {
-            for (let i = 0; i < arr.length; i++) {
-                if (arr[i].title == name) {
-                    return i;
-                }
-            }
-        }
+        const level = levelInput.value <= 5 || levelInput.value >= 1 ? levelInput.value : null;
+        document.getElementById("levelNo").innerHTML = level;
 
-
-        const tlevel = level == 1 ? level1 : level == 2 ? level2 : level == 3 ? level3 : level == 4 ? level4 : level5;
-        const testNo = find(tlevel, name);
-
-        if (testNo == undefined) {
-            alert("Test Name Not Found");
-            return;
-        }
-
-        document.getElementById("test").value = testNo;
-        localStorage.setItem("test", name);
         const beg = "https://lpu.myperfectice.com/student/assessments/";
         const testUrl = "https://lpu.myperfectice.com/student/learning-test/";
 
-        const levelId = tlevel[testNo].id;
-        const url = beg + encodeURIComponent(tlevel[testNo].title) + "?id=" + levelId;
+        const testNameAndLinkTable = document.getElementById("testNameAndLinkTable");
+        testNameAndLinkTable.innerHTML = `<tr>
+            <th>Test Name</th>
+            <th>Test Link</th>
+            <th>Assessment Link</th>
+        </tr>`;
+        testNameAndLinkTable.focus();
 
-        const directLink = document.getElementById("directLink");
-        if (directLink.style.display == "none") {
-            directLink.style.display = "block";
+
+        const checkLevel = level == 1 ? level1 : level == 2 ? level2 : level == 3 ? level3 : level == 4 ? level4 : level == 5 ? level5 : null;
+
+        for (let i = 0; i < checkLevel.length; i++) {
+            const row = testNameAndLinkTable.insertRow(i + 1);
+            const cell1 = row.insertCell(0);
+            const cell2 = row.insertCell(1);
+            const cell3 = row.insertCell(2);
+            cell1.innerHTML = `<h4>${checkLevel[i].title}</h4>`;
+            cell2.style= "background-color: #7572fe; color: #fff; text-align: center;";
+            cell2.innerHTML = `<a href="${
+                beg + encodeURIComponent(checkLevel[i].title) + "?id=" + checkLevel[i].id
+            }" target="_blank">Take Test</a>`;
+            cell3.style= "background-color: #007bff; text-align: center;";
+            cell3.innerHTML = `<a href="${testUrl + encodeURIComponent(checkLevel[i].title) + "?id=" + checkLevel[i].id}" target="_blank">Take Assessment</a>`;
         }
-        else {
-            directLink.style.display = "none";
-        }
-        directLink.href = testUrl + levelId;
-        window.open(directLink.href, "_blank").focus();
+
     });
 
-    document.getElementById("testName").innerHTML = localStorage.getItem("test");
+    levelInput.addEventListener("input", function () {
+        document.getElementById("testNameAndLinkTable").scrollIntoView();
+    });
 
 </script>
 
