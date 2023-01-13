@@ -248,7 +248,7 @@
                 beg + encodeURIComponent(checkLevel[i].title) + "?id=" + checkLevel[i].id
             }" target="_blank">Take Test</a>`;
             cell3.style= "background-color: #007bff; text-align: center;";
-            cell3.innerHTML = `<a href="${testUrl + encodeURIComponent(checkLevel[i].title) + "?id=" + checkLevel[i].id}" target="_blank">Take Assessment</a>`;
+            cell3.innerHTML = `<a href="${testUrl + checkLevel[i].id}" target="_blank">Take Assessment</a>`;
         }
 
     });
